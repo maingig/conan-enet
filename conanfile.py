@@ -46,11 +46,16 @@ class EnetConan(ConanFile):
         #env_build.libs.append("pthread")
         if self.settings.os == "QNX":
             env_build.defines.append("__EXT_BSD=ON")
+        if self.settings.os == "Windows" and self.options.shared:
+            env_build.defines.append("ENET_DLL=ON")
         with tools.environment_append(env_build.vars):
-            self.run("cd %s && autoreconf -vfi" % (self.name))
-            self.run("cd %s && ./configure" % (self.name))
-            self.run("cd %s && make" % (self.name))
-            self.run("cd %s && ./libtool --mode=install /usr/bin/install -c libenet.la %s/%s" % (self.name, self.build_folder, self.name))
+            if self.settings.os == "Windows":
+                self.run('cd %s && NMAKE /f "enet.mak" CFG="enet - Win32 Debug"' % (self.name))
+            else:
+                self.run("cd %s && autoreconf -vfi" % (self.name))
+                self.run("cd %s && ./configure" % (self.name))
+                self.run("cd %s && make" % (self.name))
+                self.run("cd %s && ./libtool --mode=install /usr/bin/install -c libenet.la %s/%s" % (self.name, self.build_folder, self.name))
 
     def package(self):
         self.copy(pattern="LICENSE", dst="licenses", src="%s/%s" % (self.build_folder, self.name))
