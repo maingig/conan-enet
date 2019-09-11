@@ -63,7 +63,7 @@ class EnetConan(ConanFile):
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
         if self.settings.os == "Windows":
-            self.cpp_info.libs.extend(['psapi', 'ws2_32'])
+            self.cpp_info.libs.extend(['winmm', 'ws2_32'])
         elif self.settings.os == "Linux":
             self.cpp_info.libs.extend(['pthread'])
         elif self.settings.os == "QNX":
