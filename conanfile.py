@@ -7,9 +7,9 @@ from conans import ConanFile, CMake, tools
 class EnetConan(ConanFile):
     name = "enet"
     version = "1.3.14"
-    license = "https://github.com/maingig/enet/blob/master/LICENSE"
-    author = "https://github.com/maingig/enet/graphs/contributors"
-    url = "https://github.com/maingig/enet.git"
+    license = "https://github.com/lsalzman/enet/blob/master/LICENSE"
+    author = "https://github.com/lsalzman/enet/graphs/contributors"
+    url = "https://github.com/lsalzman/enet.git"
     description = "ENet reliable UDP networking library"
     topics = ("udp", "C", "networking")
     settings = "os", "compiler", "build_type", "arch"
@@ -42,6 +42,9 @@ class EnetConan(ConanFile):
 
     def configure_cmake(self):
         cmake = CMake(self)
+        if self.options.fPIC:
+            cmake.definitions["CMAKE_C_FLAGS"] = "-fPIC"
+            cmake.definitions["CMAKE_CXX_FLAGS"] = "-fPIC"
         cmake.configure(source_folder=self.name, build_folder=self.name)
         return cmake
 
