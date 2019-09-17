@@ -42,7 +42,7 @@ class EnetConan(ConanFile):
 
     def configure_cmake(self):
         cmake = CMake(self)
-        if self.options.fPIC:
+        if 'fPIC' in self.options and self.options.fPIC:
             cmake.definitions["CMAKE_C_FLAGS"] = "-fPIC"
             cmake.definitions["CMAKE_CXX_FLAGS"] = "-fPIC"
         cmake.configure(source_folder=self.name, build_folder=self.name)
